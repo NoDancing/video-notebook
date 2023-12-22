@@ -28,7 +28,7 @@ class Notebook:
         self.note_list = []
 
     def import_notes(self, csvfile):
-        with open(csvfile, newline='') as csvfile:
+        with open(csvfile, 'r', newline='') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 self.note_list.append(Note(row[0], row[1]))
@@ -50,7 +50,7 @@ class Notebook:
 
     def print_notes(self):
         for note in self.note_list:
-            print(f'Note #{note.index()}:\n{note.timecode}: {note.content}')
+            print(f'Note #{self.note_list.index(note)}:\n{note.timecode}: {note.content}')
 
     def edit_notes(self):
         self.print_notes()
@@ -69,4 +69,9 @@ if args.Write:
     notebook.import_notes(csvfile)
     notebook.start_taking_notes()
     notebook.export_notes(csvfile)
+
+if args.Print:
+    notebook = Notebook()
+    notebook.import_notes(csvfile)
+    notebook.print_notes()
 
