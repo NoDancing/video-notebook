@@ -28,9 +28,10 @@ class Notebook:
         self.note_list = []
 
     def import_notes(self, csvfile):
-        reader = csv.reader(csvfile)
-        for row in reader:
-            self.note_list.append(Note(row[0], row[1]))
+        with open(csvfile, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                self.note_list.append(Note(row[0], row[1]))
 
     def sort_notes(self):
         for note in self.note_list:
@@ -65,6 +66,7 @@ class Notebook:
 
 if args.Write:
     notebook = Notebook()
+    notebook.import_notes(csvfile)
     notebook.start_taking_notes()
     notebook.export_notes(csvfile)
 
