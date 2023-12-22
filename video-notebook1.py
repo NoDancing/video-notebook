@@ -3,15 +3,17 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Take notes while watching a video.')
 
-parser.add_argument('-w', '--Write', help = 'Start writing notes.')
-parser.add_argument('-d', '--Delete', help = 'Delete a single note.')
-parser.add_argument('-a', '--Add', help = 'Add a single note.')
-parser.add_argument('-p', '--Print', help = 'Print the notes.')
-parser.add_argument('-e', '--Edit', help = 'Edit a note.')
+parser.add_argument('-w', '--Write', action='store_true', help = 'Start writing notes.')
+parser.add_argument('-d', '--Delete', action='store_true', help = 'Delete a single note.')
+parser.add_argument('-a', '--Add', action='store_true', help = 'Add a single note.')
+parser.add_argument('-p', '--Print', action='store_true', help = 'Print the notes.')
+parser.add_argument('-e', '--Edit', action='store_true', help = 'Edit a note.')
 
 args = parser.parse_args()
 
 note_list = []
+
+csvfile = 'notes.csv'
 
 class Note:
     def __init__(self, timecode, content):
@@ -54,16 +56,15 @@ class Notebook:
         id = input('Which note do you want to edit?')
         # implement editing logic here
     
-    def export_notes(self):
+    def export_notes(self, csvfile):
         self.sort_notes()
-        with open('book.csv', 'w', newline='') as csvfile:
+        with open(csvfile, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             for note in self.note_list:
                 writer.writerow([note.timecode, note.content])
 
 if args.Write:
     notebook = Notebook()
-    notebook.import_notes()
     notebook.start_taking_notes()
-    notebook.export_notes()
+    notebook.export_notes(csvfile)
 
