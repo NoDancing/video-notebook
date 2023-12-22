@@ -21,46 +21,49 @@ class Note:
     def __str__(self):
         return f"Note: timecode={self.timecode}, content={self.content}"
 
-def export_notes(note_list):
-    sort_notes(note_list)
-    with open('book.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        for note in note_list:
-            writer.writerow([note.timecode, note.content])
+class Notebook:
+    def __init__(self):
+        self.note_list = []
 
-def import_notes(note_list):
-    note_list = []
-    with open('book.csv', newline='') as csvfile:
+    def import_notes(self, csvfile):
         reader = csv.reader(csvfile)
         for row in reader:
-            note_list.append(Note(row[0], row[1]))
+            self.note_list.append(Note(row[0], row[1]))
 
-def sort_notes(note_list):
-    for note in note_list:
-        note.timecode = float(note.timecode)
-    note_list.sort(key=lambda note: note.timecode)
+    def sort_notes(self):
+        for note in self.note_list:
+            note.timecode = float(note.timecode)
+        self.note_list.sort(key=lambda note: note.timecode)
 
-def start_taking_notes(note_list):
-    print('Type "exit" to stop taking notes.')
-    movietime = 0  # Timecode of the note. Will implement later.
-    while True:
-        content = input('Note: ')
-        if content == 'exit':
-            break
-        note = Note(movietime, content)
-        note_list.append(note)
-    return note_list
+    def start_taking_notes(self):
+        print('Type "exit" to stop taking notes.')
+        movietime = 0  # Timecode of the note. Will implement later.
+        while True:
+            content = input('Notes: ')
+            if content == 'exit':
+                break
+            note = Note(movietime, content)
+            self.note_list.append(note)
 
-def print_notes(note_list):
-    for note in note_list:
-        print(f'Note #{note.index()}:\n{note.timecode}: {note.content}')
+    def print_notes(self):
+        for note in self.note_list:
+            print(f'Note #{note.index()}:\n{note.timecode}: {note.content}')
 
-def edit_notes(note_list):
-    print_notes(note_list)
-    id = input('Which note do you want to edit?')
-    pass
+    def edit_notes(self):
+        self.print_notes()
+        id = input('Which note do you want to edit?')
+        # implement editing logic here
+    
+    def export_notes(self):
+        self.sort_notes()
+        with open('book.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            for note in self.note_list:
+                writer.writerow([note.timecode, note.content])
 
 if args.Write:
-    import_notes()
-    start_taking_notes(note_list)
-    export_notes(note_list)
+    notebook = Notebook()
+    notebook.import_notes()
+    notebook.start_taking_notes()
+    notebook.export_notes()
+
