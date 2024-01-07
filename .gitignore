@@ -1,3 +1,5 @@
 .DS_Store
 notes.csv
 test.csv
+__pycache__
+testvideo.mkv

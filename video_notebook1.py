@@ -1,5 +1,8 @@
 import csv
 import argparse
+import play_vlc
+import tkinter as tk
+import threading
 
 parser = argparse.ArgumentParser(description='Take notes while watching a video.')
 
@@ -98,7 +101,17 @@ notebook = Notebook()
 notebook.import_notes(CSV_FILE)
 
 if args.Write:
-    notebook.start_taking_notes()
+
+    note_taking_thread = threading.Thread(target=notebook.start_taking_notes)
+    note_taking_thread.start()
+
+    root = tk.Tk()
+    player = play_vlc.VideoPlayer(root, 'testvideo.mkv')
+    player.video_path = 'testvideo.mkv'
+    player.play()
+    root.mainloop()
+
+    note_taking_thread.join()
 
 if args.Print:
     notebook.print_notes()
