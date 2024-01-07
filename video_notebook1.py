@@ -33,7 +33,8 @@ class Notebook:
         with open(CSV_FILE, 'r', newline='') as file:
             reader = csv.reader(file)
             for row in reader:
-                self.note_list.append(Note(row[0], row[1]))
+                timecode = float(row[0])
+                self.note_list.append(Note(timecode, row[1]))
 
     def sort_notes(self):
         """Sorts the notes by timecode."""
